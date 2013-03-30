@@ -1,0 +1,62 @@
+% !TEX encoding = UTF-8
+% !TEX program = pdflatex
+% !TEX root = ../guidaebooklatex.tex
+
+
+\chapter{calibre}
+
+Abbiamo ottenuto un file html ``intermedio'', che deve ancora
+essere processato da uno strumento adatto a convertire il nostro testo in 
+mobi/epub. Fa quindi al caso nostro il programma calibre, ed in particolare la 
+sua versione a riga di comando ebook-convert. Anche in questo caso dovremo 
+passare all'eseguibile alcune opzioni, per corredare il nostro ebook di una 
+serie di informazioni:
+
+\begin{lstlisting}
+ebook-convert \
+  tmp/main_semplice.html \
+  output.epub \
+  --output-profile=kindle  \
+  --change-justification justify \
+  --max-toc-links 0 \
+  --authors="Pietro Giuffrida"  \
+  --title="Da LaTeX ad ebook in tre semplici mosse"  \
+  --publisher="Centro Internazionale per la Ricerca Filosofica"  \
+  --series="Epekeina. International Journal of Ontology. History and Critics" \
+  --pubdate="2012-11-10"  \
+  --cover="cover.png"
+
+\end{lstlisting}
+
+Vediamo nel dettaglio il significato delle opzioni meno esplicite: 
+\begin{itemize}
+\item[--output-profile=kindle]
+\item[--change-justification justify]
+\item[--max-toc-links 0]
+\item[--authors="Pietro Giuffrida"]
+\item[--title="Da LaTeX ad ebook in tre semplici mosse"]
+\item[--publisher="Guide del GuIT"]
+\item[--pubdate="2013-03-29"]
+\item[--cover="cover.png"]
+l'opzione cover permette di specificare un'immagine da
+includere nell'ebook. Consiglio di non trascurare tale opzione, perché gli 
+ebook-reader usano una miniatura della copertina per rappresentare la libreria, 
+ed in sua assenza usano una miniatura della prima pagina del testo, con il 
+risultato di rendere irriconoscibile il libro e sgradevole il suo aspetto. 
+\end{itemize}
+
+\chapter{Tutto con un solo script}
+Chiaramente i passaggi necessari per la produzione di un ebook dai sorgenti 
+\LaTeX{} possono essere facilmente integrati in un unico script, per evitare di
+dover fare tutti i passaggi a mano e di dover scrivere interminabili istruzioni 
+sulla riga di comando. A questo scopo può sicuramente essere apprestato un 
+makefile, ma per il momento io mi sono limitato ad un semplice script bash, più 
+flessibile in fase di sperimentazione e, almeno per le mie competenze, più 
+facilmente implementabile con le istruzioni sed per commentare il codice 
+indesiderato nel file tex. Un esempio di tale script potrebbe essere questo:
+
+\begin{lstlisting}
+sed -e "s/\\\looseness=+1//g" \
+    -e "s/\\\looseness=-1//g" \
+    main_semplice.tex > epub.tex
+\end{lstlisting}

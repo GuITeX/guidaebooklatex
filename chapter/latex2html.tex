@@ -1,0 +1,144 @@
+% !TEX encoding = UTF-8
+% !TEX program = pdflatex
+% !TEX root = ../guidaebooklatex.tex
+
+
+\chapter{Un preambolo per latex2html}
+
+Ottenere un preambolo adeguato alla compilazione con latex2html è un'operazione
+di per sé che non offre particolari difficoltà. È infatti sufficiente includere
+solo e soltanto i pacchetti strettamente indispensabili. Chiaramente però un
+preambolo di tale tipo limita fortemente le opzioni normalmente a disposizione
+di un utente Latex. Nell'approccio che intendo suggerire ho quindi scelto di
+utilizzare contemporaneamente due main file distinti, uno destinato alla
+compilazione con pdflatex, e l'altro alla produzione del ebook. In entrambi i
+main file non dovrà quindi esser presente alcuna parte del testo, ma soltanto le
+chiamate ai vari pacchetti ed i comandi input necessari a caricare i vari file
+tex contenenti il testo vero e proprio. Quest'approccio ha chiaramente la
+controindicazione fondamentale di dover utilizzare nella stesura del testo solo
+e soltanto comandi compatibili con il preambolo scarno progettato per
+latex2html. In altri termini le uniche vere differenze tra i due preamboli
+possono consistere in ridefinizioni di ambienti e pacchetti standard,
+normalmente interpretati senza bisogno di pacchetti aggiuntivi, ed opzioni per
+la formattazione del testo nei suoi vari aspetti (font, geometria della pagina
+etc.) comunque irrilevanti, se non dannosi, per la produzione del file
+html.\footnote
+  {Purtroppo latex2html non riconosce neppure i comandi generalmente
+  utilizzati per la revisione finale del testo, quali enlargethispage. A questo
+  proposito si veda lo script in appendice}
+
+Un esempio minimo funzionante potrebbe essere il seguente.
+
+\begin{lstlisting}
+\documentclass[a4paper,oneside,10pt]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+
+\usepackage{natbib}
+\bibpunct[, ]{}{}{;}{a}{,}{,}
+
+\begin{document}
+\pagestyle{empty}
+\bibliographystyle{abbrvnat}
+
+\input{ilmiotesto}
+
+\bibliography{bibfile}
+
+\end{document}
+\end{lstlisting}
+
+Qualche commento su queste poche righe di codice:
+\begin{itemize}
+\item
+non ci sono indicazioni di font o di geometria della pagina. Sarebbe
+superfluo e probabilmente otterremmo degli errori in fase di compilazione
+
+\item
+uso il pacchetto natbib, e non il più moderno biblatex. Ciò
+perché quest'ultimo non è compatibile con latex2html.
+\end{itemize}
+
+Nel main file più complesso, destinato alla produzione del pdf, potremo
+comunque usare  il pacchetto biblatex, attenendoci però in fase di
+elaborazione della base dati bib a quei campi interpretabili anche dal più
+vecchio bibtex. Giusto per fare un esempio, non dovremo usare il campo location,
+ma quello xxxx. Nel caso dei campi tipici del pacchetto biblatex-philosophy
+potremo invece usare i campi orig-x ma essi saranno ignorati.
+
+Ciò detto, appena in grado di compilare senza errori il sorgente tex nella sua
+versione  scarna potremo passare alla fase successiva.
+
+\section{latex2html}
+
+Per ottenere il file html dal nostro file tex dovremo compilare quest'ultimo 
+mediante l'eseguibile latex2html. Tale programma però, salvo specificare alcune
+opzioni di compilazione, produce un file html per ciascuna section, e dota 
+ciascuna pagina di una serie di strumenti di lettura utili e sensati solo se 
+destinati all'uso in un browser tradizionale, ma del tutto inutili nel nostro 
+caso. Nella mia esperienza attuale il programma dovrà quindi essere utilizzato 
+nel modo seguente:
+
+
+\begin{lstlisting}
+latex2html -html_version 4.0,latin1,unicode \
+ -nolatex \
+ -no_footnode  \
+ -split 0  \
+ -no_navigation  \
+ -info 0  \
+ -mkdir  \
+ -dir tmp  \
+ main_semplice.tex
+\end{lstlisting}
+
+Vediamo il significato delle opzioni utilizzate:
+
+\begin{description}
+\item[-nolatex] a
+
+\item[-not\_footnode] b
+
+\item[-split 0] c
+
+\item[-no\_navigation] d
+
+\item[-info 0] e
+
+\item[-mkdir] f
+
+\item[-dir tmp] g
+
+\end{description}
+
+
+Chiaramente potere aprire il file html così generato con qualsiasi browser, in 
+modo anche da potervi rendere conto di eventuali errori. Un problema che ho 
+riscontrato in questa fase è relativo all'uso dei comandi spesso utilizzati per 
+la revisione finale del testo, in particolare enlargethispage e compagnia
+bella. 
+Tali comandi non vengono riconosciuti da latex2html, che li riporta in modo
+letterale nel file html definitivo. Di conseguenza se non interveniamo anche il 
+nostro ebook vanterà le misteriose scritte enlargethispage all'interno del 
+testo! Per ovviare a questo problema possiamo procedere in diversi modi: 
+\begin{itemize}
+\item a mano, ovvero commentando i comandi suddetti prima di 
+compilare con \LaTeX e con latex2html, ripristinando poi la situazione iniziale
+non appena avremo terminato tale fase.
+
+\item in modo automatico, chiedendo ad latex2html di ignorare tali comandi. Solo
+che non ci sono mai riuscito.
+
+\item in modo semiautomatico, ovvero affidandoci ad uno script che adatti il 
+testo alle nostre esigenze.
+\end{itemize}
+
+Per il momento io seguo questa terza opzione, lanciando già il comando
+latex2html tramite uno script che si occupa preventivamente di commentare tutte
+le occorrenze dei comandi indesiderati, di eseguire latex2html, e poi di
+rimuovere i commenti applicati.
+
+\begin{lstlisting}
+\end{lstlisting}
+

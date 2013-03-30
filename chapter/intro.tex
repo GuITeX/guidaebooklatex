@@ -1,0 +1,45 @@
+% !TEX encoding = UTF-8
+% !TEX program = pdflatex
+% !TEX root = ../guidaebooklatex.tex
+
+
+\chapter{Introduzione}
+
+Un metodo per ottenere dal sorgente \LaTeX, oltre al normale output pdf, anche un 
+output compatibile con i più diffusi e-reader in commercio, ovvero epub o mobi. 
+Questi ultimi due formati sono in realtà dei dialetti html, i cui sorgenti sono 
+compressi in un file zippato, appunto con estensione mobi o eub. La guida non 
+scende, al momento, nel dettaglio di tali formati e delle possibili 
+personalizzazioni. L'onere della conversione definitva è infatti lasciata a dei 
+programmi esterni alla famiglia tex, ovvero calibre. Il flusso di lavoro
+prevede l'aggiunta di due passaggi alla normale stesura di un documento con 
+Latex. Terminata la stesura del documento occorrerà infatti seguire i seguenti passaggi.
+
+\begin{comment}
+\begin{center}
+\begin{forest}
+[latex
+[bibtex
+[latex
+[latex
+[latex2html
+[calibre]]]]]]
+\end{forest}
+\end{center}
+\end{comment}
+
+I primi passaggi sono noti a qualsiasi utente Latex. Si tratta di generare il 
+documento in dvi (e non in pdf) con compilando il sorgente tex con l'eseguibile 
+latex, aggiungendo poi i passaggi necessari alla generazione della bibliografia 
+con lo storico pacchetto bibtex (e non con biblatex!).
+
+Il programma latex2html dovrà essere adeguatamente configurato in modo da
+produrre
+un output piuttosto scarno, privo di elementi che potrebbero essere mal 
+interpretati da calibre nella generazione del ebook definitivo. Per ottenere un 
+risultato accettabile bisogna considerare che latex2html riconosce un numero
+estremamente limitato di pacchetti, nel cui numero non è possibile neppure 
+vantare ifthenesle. Di conseguenza in primo problema cui ovviare è proprio 
+quello di ottenere un main file \LaTeX compatibile con latex2html.
+
+

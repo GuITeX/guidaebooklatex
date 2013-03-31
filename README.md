@@ -3,7 +3,7 @@ Guida alla creazione di ebook con LaTeX
 
 Contiene i sorgenti LaTeX della Guida tematica per creare ebooks con LaTeX.
 Attualmente la guida non è stata ancora pubblicata sul
-[[http://guitex.org][sito del GuIT]] trovandosi in pieno sviluppo.
+[sito del GuIT](http://guitex.org) trovandosi in pieno sviluppo.
 
 Il tema degli ebook è quanto mai attuale ed in rapida diffusione, perciò un
 ringraziamento anticipato va a chi vorrà contribuire alla guida con la propria
